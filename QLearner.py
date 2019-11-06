@@ -98,9 +98,38 @@ class QLearner(object):
         @param r: The ne state  		   	  			  	 		  		  		    	 		 		   		 		  
         @returns: The selected action  		   	  			  	 		  		  		    	 		 		   		 		  
         """  		   	  			  	 		  		  		    	 		 		   		 		  
-        action = rand.randint(0, self.num_actions-1)  		   	  			  	 		  		  		    	 		 		   		 		  
+        
+        self.Q[self.s, self.a] = (1 - self.alpha) * self.Q[self.s, self.a] + self.alpha * (r +self.gamma*self.Q[s_prime,:].max())
+
+        if self.dyna > 0:
+            # T and R update
+            self.Tc[self.s, self.a, s_prime] += 1
+            self.T[self.s, self.a, :] = self.Tc[self.s, self.a, :] / self.Tc[self.s, self.a, :].sum()
+            self.R[self.s, self.a] = (1 - self.alpha) * self.R[self.s, self.a] + self.alpha * r
+
+            # Hallucinate
+            dyna_s = np.random.randint(0, self.num_states, size=self.dyna)
+            dyna_a = np.random.randint(0, self.num_actions, size=self.dyna)
+            dyna_s_prime = self.T[dyna_s, dyna_a, :].argmax(axis=1)
+            dyna_action = self.Q[dyna_s_prime, :].argmax(axis=1)
+            dyna_r = self.R[dyna_s, dyna_a]
+
+            # Update
+            self.Q[dyna_s, dyna_a] = (1 - self.alpha) * self.Q[dyna_s, dyna_a] + self.alpha * (dyna_r + self.gamma * self.Q[dyna_s_prime, dyna_action])
+
+        
+        #action = rand.randint(0, self.num_actions-1)  		   	  			  	 		  		  		    	 		 		   		 		
+        #move to next action
+        action = self.querysetstate(s_prime)
+        
+        #update random state
+        self.rar *= self.radr
+        
         if self.verbose: print(f"s = {s_prime}, a = {action}, r={r}")  		   	  			  	 		  		  		    	 		 		   		 		  
         return action  		   	  			  	 		  		  		    	 		 		   		 		  
-  		   	  			  	 		  		  		    	 		 		   		 		  
+
+ 
+    
+    
 if __name__=="__main__":  		   	  			  	 		  		  		    	 		 		   		 		  
     print("Remember Q from Star Trek? Well, this isn't him")  		   	  			  	 		  		  		    	 		 		   		 		  
