@@ -48,7 +48,7 @@ class QLearner(object):
         self.verbose = verbose  		   	  			  	 		  		  		    	 		 		   		 		  
         self.num_actions = num_actions  		   	  			  	 		  		  		    	 		 		   		 		  
         self.s = 0  		   	  			  	 		  		  		    	 		 		   		 		  
-        self.a = 0  
+        self.a = 0 
         
         
         self.num_states = num_states
@@ -61,6 +61,8 @@ class QLearner(object):
         self.radr = radr
         self.dyna = dyna
         
+        self.s = 0  		   	  			  	 		  		  		    	 		 		   		 		  
+        self.a = 0  
         self.Q = np.zeros((num_states, num_actions))
         
         if dyna > 0:
@@ -79,14 +81,25 @@ class QLearner(object):
         """  		   	  			  	 		  		  		    	 		 		   		 		  
         
         
-          		   	  			  	 		  		  		    	 		 		   		 		  
         
         # decision is made on action 
         action = self.Q[s, :].argmax()
         if rand.uniform(0.0, 1.0) <= self.rar:
             action = rand.randint(0, self.num_actions-1)  		   	  			  	 		  		  		    	 		 		   		 		  
-        if self.verbose: print(f"s = {s}, a = {action}")  		   	  			  	 		  		  		    	 		 		   	self.s = s
-        self.a =action
+        
+        #if self.verbose: print(f("s = {s}, a = {action}")) 
+        
+        if self.verbose: print(("{},{}".format(a, action)))    
+            
+         #print("Date Range: {} to {}".format(sd, ed))
+           
+        
+            
+           
+        self.s = s
+        self.a = action
+            
+            
         return action  		   	  			  	 		  		  		    	 		 		   		 		  
   		
         
