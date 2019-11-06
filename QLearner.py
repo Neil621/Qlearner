@@ -77,11 +77,20 @@ class QLearner(object):
         @param s: The new state  		   	  			  	 		  		  		    	 		 		   		 		  
         @returns: The selected action  		   	  			  	 		  		  		    	 		 		   		 		  
         """  		   	  			  	 		  		  		    	 		 		   		 		  
-        self.s = s  		   	  			  	 		  		  		    	 		 		   		 		  
-        action = rand.randint(0, self.num_actions-1)  		   	  			  	 		  		  		    	 		 		   		 		  
-        if self.verbose: print(f"s = {s}, a = {action}")  		   	  			  	 		  		  		    	 		 		   		 		  
+        
+        
+          		   	  			  	 		  		  		    	 		 		   		 		  
+        
+        # decision is made on action 
+        action = self.Q[s, :].argmax()
+        if rand.uniform(0.0, 1.0) <= self.rar:
+            action = rand.randint(0, self.num_actions-1)  		   	  			  	 		  		  		    	 		 		   		 		  
+        if self.verbose: print(f"s = {s}, a = {action}")  		   	  			  	 		  		  		    	 		 		   	self.s = s
+        self.a =action
         return action  		   	  			  	 		  		  		    	 		 		   		 		  
-  		   	  			  	 		  		  		    	 		 		   		 		  
+  		
+        
+        
     def query(self,s_prime,r):  		   	  			  	 		  		  		    	 		 		   		 		  
         """  		   	  			  	 		  		  		    	 		 		   		 		  
         @summary: Update the Q table and return an action  		   	  			  	 		  		  		    	 		 		   		 		  
