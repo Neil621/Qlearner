@@ -22,8 +22,8 @@ GT honor code violation.
 -----do not edit anything above this line---  		   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
 Student Name: Tucker Balch (replace with your name)  		   	  			  	 		  		  		    	 		 		   		 		  
-GT User ID: tb34 (replace with your User ID)  		   	  			  	 		  		  		    	 		 		   		 		  
-GT ID: 900897987 (replace with your GT ID)  		   	  			  	 		  		  		    	 		 		   		 		  
+GT User ID: nwatt (replace with your User ID)  		   	  			  	 		  		  		    	 		 		   		 		  
+GT ID: 903476861  (replace with your GT ID)  		   	  			  	 		  		  		    	 		 		   		 		  
 """  		   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
 import numpy as np  		   	  			  	 		  		  		    	 		 		   		 		  
@@ -31,6 +31,10 @@ import random as rand
   		   	  			  	 		  		  		    	 		 		   		 		  
 class QLearner(object):  		   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
+    
+    def author(self):
+        return "nwatt3"
+    
     def __init__(self, \
         num_states=100, \
         num_actions = 4, \
@@ -44,7 +48,28 @@ class QLearner(object):
         self.verbose = verbose  		   	  			  	 		  		  		    	 		 		   		 		  
         self.num_actions = num_actions  		   	  			  	 		  		  		    	 		 		   		 		  
         self.s = 0  		   	  			  	 		  		  		    	 		 		   		 		  
-        self.a = 0  		   	  			  	 		  		  		    	 		 		   		 		  
+        self.a = 0  
+        
+        
+        self.num_states = num_states
+        self.num_actions = num_actions
+        self.verbose = verbose
+        self.num_actions = num_actions
+        self.alpha = alpha
+        self.gamma = gamma
+        self.rar = rar
+        self.radr = radr
+        self.dyna = dyna
+        
+        self.Q = np.zeros((num_states, num_actions))
+        
+        if dyna > 0:
+            self.T = np.zeros((num_states, num_actions, num_states))
+            self.Tc = np.full((num_states, num_actions, num_states), 0.00001)
+            self.R = np.zeros((num_states, num_actions))
+            
+            
+        
   		   	  			  	 		  		  		    	 		 		   		 		  
     def querysetstate(self, s):  		   	  			  	 		  		  		    	 		 		   		 		  
         """  		   	  			  	 		  		  		    	 		 		   		 		  
