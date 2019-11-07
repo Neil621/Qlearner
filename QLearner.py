@@ -21,7 +21,7 @@ GT honor code violation.
   		   	  			  	 		  		  		    	 		 		   		 		  
 -----do not edit anything above this line---  		   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
-Student Name: Tucker Balch (replace with your name)  		   	  			  	 		  		  		    	 		 		   		 		  
+Student Name: Neil Watt(replace with your name)  		   	  			  	 		  		  		    	 		 		   		 		  
 GT User ID: nwatt (replace with your User ID)  		   	  			  	 		  		  		    	 		 		   		 		  
 GT ID: 903476861  (replace with your GT ID)  		   	  			  	 		  		  		    	 		 		   		 		  
 """  		   	  			  	 		  		  		    	 		 		   		 		  
@@ -35,14 +35,14 @@ class QLearner(object):
     def author(self):
         return "nwatt3"
     
-    def __init__(self, \
-        num_states=100, \
-        num_actions = 4, \
-        alpha = 0.2, \
-        gamma = 0.9, \
-        rar = 0.5, \
-        radr = 0.99, \
-        dyna = 0, \
+    def __init__(self, 
+        num_states=100, 
+        num_actions = 4, 
+        alpha = 0.2, 
+        gamma = 0.9, 
+        rar = 0.5, 
+        radr = 0.999, 
+        dyna = 200, 
         verbose = False):  		   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
         self.verbose = verbose  		   	  			  	 		  		  		    	 		 		   		 		  
@@ -73,35 +73,7 @@ class QLearner(object):
             
         
   		   	  			  	 		  		  		    	 		 		   		 		  
-    def querysetstate(self, s):  		   	  			  	 		  		  		    	 		 		   		 		  
-        """  		   	  			  	 		  		  		    	 		 		   		 		  
-        @summary: Update the state without updating the Q-table  		   	  			  	 		  		  		    	 		 		   		 		  
-        @param s: The new state  		   	  			  	 		  		  		    	 		 		   		 		  
-        @returns: The selected action  		   	  			  	 		  		  		    	 		 		   		 		  
-        """  		   	  			  	 		  		  		    	 		 		   		 		  
-        
-        
-        
-        # decision is made on action 
-        action = self.Q[s, :].argmax()
-        if rand.uniform(0.0, 1.0) <= self.rar:
-            action = rand.randint(0, self.num_actions-1)  		   	  			  	 		  		  		    	 		 		   		 		  
-        
-        #if self.verbose: print(f("s = {s}, a = {action}")) 
-        
-        if self.verbose: print(("{},{}".format(a, action)))    
-            
-         #print("Date Range: {} to {}".format(sd, ed))
-           
-        
-            
-           
-        self.s = s
-        self.a = action
-            
-            
-        return action  		   	  			  	 		  		  		    	 		 		   		 		  
-  		
+
         
         
     def query(self,s_prime,r):  		   	  			  	 		  		  		    	 		 		   		 		  
@@ -141,7 +113,36 @@ class QLearner(object):
         if self.verbose: print(f"s = {s_prime}, a = {action}, r={r}")  		   	  			  	 		  		  		    	 		 		   		 		  
         return action  		   	  			  	 		  		  		    	 		 		   		 		  
 
- 
+
+    def querysetstate(self, s):  		   	  			  	 		  		  		    	 		 		   		 		  
+        """  		   	  			  	 		  		  		    	 		 		   		 		  
+        @summary: Update the state without updating the Q-table  		   	  			  	 		  		  		    	 		 		   		 		  
+        @param s: The new state  		   	  			  	 		  		  		    	 		 		   		 		  
+        @returns: The selected action  		   	  			  	 		  		  		    	 		 		   		 		  
+        """  		   	  			  	 		  		  		    	 		 		   		 		  
+        
+        
+        
+        # decision is made on action 
+        action = self.Q[s, :].argmax()
+        if rand.uniform(0.0, 1.0) <= self.rar:
+            action = rand.randint(0, self.num_actions-1)  		   	  			  	 		  		  		    	 		 		   		 		  
+        
+        #if self.verbose: print(f("s = {s}, a = {action}")) 
+        
+        if self.verbose: print(("{},{}".format(a, action)))    
+            
+         #print("Date Range: {} to {}".format(sd, ed))
+           
+        
+            
+           
+        self.s = s
+        self.a = action
+            
+            
+        return action  		   	  			  	 		  		  		    	 		 		   		 		  
+  		 
     
     
 if __name__=="__main__":  		   	  			  	 		  		  		    	 		 		   		 		  
