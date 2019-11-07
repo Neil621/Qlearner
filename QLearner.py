@@ -42,12 +42,15 @@ class QLearner(object):
         gamma = 0.9, 
         rar = 0.5, 
         radr = 0.999, 
-        dyna = 200, 
+        dyna = 0 , 
         verbose = False):  		   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
         self.verbose = verbose  		   	  			  	 		  		  		    	 		 		   		 		  
         self.num_actions = num_actions  		   	  			  	 		  		  		    	 		 		   		 		  
-        self.s = 0  		   	  			  	 		  		  		    	 		 		   		 		  
+       
+        #current non-terminal state
+        self.s = 0  		   	  			  	 		  		  		    	 		 		   		 		 
+        #action 
         self.a = 0 
         
         
@@ -55,19 +58,26 @@ class QLearner(object):
         self.num_actions = num_actions
         self.verbose = verbose
         self.num_actions = num_actions
+        #learning rate
         self.alpha = alpha
+        #discount rate applied in update rule
         self.gamma = gamma
+        
+        #the probability of selecting a random action at each step (action rate)
         self.rar = rar
+        
+        #random action decay rate
         self.radr = radr
+        
+        #number of dyna updates
         self.dyna = dyna
         
-        self.s = 0  		   	  			  	 		  		  		    	 		 		   		 		  
-        self.a = 0  
+        
         self.Q = np.zeros((num_states, num_actions))
         
         if dyna > 0:
             self.T = np.zeros((num_states, num_actions, num_states))
-            self.Tc = np.full((num_states, num_actions, num_states), 0.00001)
+            self.Tc = np.full((num_states, num_actions, num_states), 0.001)
             self.R = np.zeros((num_states, num_actions))
             
             
@@ -83,6 +93,7 @@ class QLearner(object):
         @param r: The ne state  		   	  			  	 		  		  		    	 		 		   		 		  
         @returns: The selected action  		   	  			  	 		  		  		    	 		 		   		 		  
         """  		   	  			  	 		  		  		    	 		 		   		 		  
+        
         
         self.Q[self.s, self.a] = (1 - self.alpha) * self.Q[self.s, self.a] + self.alpha * (r +self.gamma*self.Q[s_prime,:].max())
 
@@ -104,10 +115,12 @@ class QLearner(object):
 
         
         #action = rand.randint(0, self.num_actions-1)  		   	  			  	 		  		  		    	 		 		   		 		
-        #move to next action
+        #execute action a
+        
+
         action = self.querysetstate(s_prime)
         
-        #update random state
+        #update the random state
         self.rar *= self.radr
         
         if self.verbose: print(f"s = {s_prime}, a = {action}, r={r}")  		   	  			  	 		  		  		    	 		 		   		 		  
