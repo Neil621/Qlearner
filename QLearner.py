@@ -77,6 +77,7 @@ class QLearner(object):
         
         if dyna > 0:
             self.T = np.zeros((num_states, num_actions, num_states))
+            #the 0.001 is added to avoid dividing by zero later
             self.Tc = np.full((num_states, num_actions, num_states), 0.001)
             self.R = np.zeros((num_states, num_actions))
             
@@ -103,14 +104,19 @@ class QLearner(object):
             self.T[self.s, self.a, :] = self.Tc[self.s, self.a, :] / self.Tc[self.s, self.a, :].sum()
             self.R[self.s, self.a] = (1 - self.alpha) * self.R[self.s, self.a] + self.alpha * r
 
-            # Hallucinate
+            # dyna "hallucinates" creates fake learning examples
+            #randomly select an s (state)
             dyna_s = np.random.randint(0, self.num_states, size=self.dyna)
+            #randomly select an a (action)
             dyna_a = np.random.randint(0, self.num_actions, size=self.dyna)
+            
+            #infer new state s prime, by looking at t
             dyna_s_prime = self.T[dyna_s, dyna_a, :].argmax(axis=1)
             dyna_action = self.Q[dyna_s_prime, :].argmax(axis=1)
+            #infer reward by evaluated s and a
             dyna_r = self.R[dyna_s, dyna_a]
 
-            # Update
+            # update state
             self.Q[dyna_s, dyna_a] = (1 - self.alpha) * self.Q[dyna_s, dyna_a] + self.alpha * (dyna_r + self.gamma * self.Q[dyna_s_prime, dyna_action])
 
         
