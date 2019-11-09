@@ -77,7 +77,8 @@ class QLearner(object):
         
         if dyna > 0:
             self.T = np.zeros((num_states, num_actions, num_states))
-            #the 0.001 is added to avoid dividing by zero later
+            #the 0.001 is added to T count values to avoid dividing by zero later
+            #Tc is the number of times each state/action has occured
             self.Tc = np.full((num_states, num_actions, num_states), 0.001)
             self.R = np.zeros((num_states, num_actions))
             
@@ -94,6 +95,7 @@ class QLearner(object):
         @param r: The ne state  		   	  			  	 		  		  		    	 		 		   		 		  
         @returns: The selected action  		   	  			  	 		  		  		    	 		 		   		 		  
         """  		   	  			  	 		  		  		    	 		 		   		 		  
+        
         
         
         self.Q[self.s, self.a] = (1 - self.alpha) * self.Q[self.s, self.a] + self.alpha * (r +self.gamma*self.Q[s_prime,:].max())
@@ -147,14 +149,11 @@ class QLearner(object):
         if rand.uniform(0.0, 1.0) <= self.rar:
             action = rand.randint(0, self.num_actions-1)  		   	  			  	 		  		  		    	 		 		   		 		  
         
-        #if self.verbose: print(f("s = {s}, a = {action}")) 
         
         if self.verbose: print(("{},{}".format(a, action)))    
             
-         #print("Date Range: {} to {}".format(sd, ed))
-           
         
-            
+
            
         self.s = s
         self.a = action
