@@ -108,18 +108,18 @@ class QLearner(object):
 
             # dyna "hallucinates" creates fake learning examples
             #randomly select an s (state)
-            dyna_s = np.random.randint(0, self.num_states, size=self.dyna)
+            S_dyna = np.random.randint(0, self.num_states, size=self.dyna)
             #randomly select an a (action)
-            dyna_a = np.random.randint(0, self.num_actions, size=self.dyna)
+            A_dyna = np.random.randint(0, self.num_actions, size=self.dyna)
             
             #infer new state s prime, by looking at t
-            dyna_s_prime = self.T[dyna_s, dyna_a, :].argmax(axis=1)
-            dyna_action = self.Q[dyna_s_prime, :].argmax(axis=1)
+            S_dyna_prime = self.T[S_dyna, A_dyna, :].argmax(axis=1)
+            dyna_action = self.Q[S_dyna_prime, :].argmax(axis=1)
             #infer reward by evaluated s and a
-            dyna_r = self.Expected_Reward[dyna_s, dyna_a]
+            dyna_r = self.Expected_Reward[S_dyna, A_dyna]
 
             # update state
-            self.Q[dyna_s, dyna_a] = (1 - self.alpha) * self.Q[dyna_s, dyna_a] + self.alpha * (dyna_r + self.gamma * self.Q[dyna_s_prime, dyna_action])
+            self.Q[S_dyna, A_dyna] = (1 - self.alpha) * self.Q[S_dyna, A_dyna] + self.alpha * (dyna_r + self.gamma * self.Q[S_dyna_prime, dyna_action])
 
             
         action = self.querysetstate(s_prime)
